@@ -1,6 +1,6 @@
 # Ember-flow
 
-This README outlines the details of collaborating on this Ember addon.
+An ember version of the reactjs [Reflux](https://github.com/spoike/refluxjs) library for unidirectional dataflow architecture.
 
 ## Installation
 
