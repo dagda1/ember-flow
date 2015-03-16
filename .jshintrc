@@ -3,7 +3,8 @@
     "document",
     "window",
     "-Promise",
-    "$"
+    "$",
+    "QUnit"
   ],
   "browser": true,
   "boss": true,

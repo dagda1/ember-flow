@@ -21,7 +21,8 @@ export default function createAction(definition) {
 
     args.unshift(functor.eventLabel);
 
-    return functor.trigger.apply(functor, args);
+    Ember.run.next(() =>
+                   functor.trigger.apply(functor, args));
   };
 
   $.extend(functor, context);

@@ -1,7 +1,9 @@
 import {
   moduleFor,
-  test
+  test,
 } from 'ember-qunit';
+import Ember from 'ember';
+import QUnit from 'qunit';
 
 moduleFor('service:flow', {
 });
@@ -18,9 +20,15 @@ test('an action should be callable', function(assert) {
 
   store.listenTo(fooAction, "foo");
 
+  QUnit.stop();
+
   fooAction();
 
-  assert.ok(fooAction._isAction, "is an action");
-  assert.ok($.isFunction(fooAction, "action is a function"));
-  assert.ok(fooCalled, "The action was called");
+  Ember.run.next(() => {
+    QUnit.start();
+    assert.ok(fooAction._isAction, "is an action");
+    assert.ok($.isFunction(fooAction, "action is a function"));
+    assert.ok(fooCalled, "The action was called");
+  });
 });
+
