@@ -27,5 +27,12 @@ export default Ember.Mixin.create(Ember.Evented, {
       aborted = true;
       this.off(this.eventLabel, this, eventHandler);
     };
+  },
+
+  triggerAsync: function() {
+    let args = arguments;
+
+    Ember.run.next(() =>
+                   this.trigger.apply(this, args));
   }
 });

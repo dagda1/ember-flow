@@ -17,12 +17,12 @@ export default function createAction(definition) {
   }, definition);
 
   let functor = function() {
-    let args = __slice.call(arguments);
+    let args = __slice.call(arguments),
+        triggerMethod = (functor.sync) ? "trigger" : "triggerAsync";
 
     args.unshift(functor.eventLabel);
 
-    Ember.run.next(() =>
-                   functor.trigger.apply(functor, args));
+    functor[triggerMethod].apply(functor, args);
   };
 
   $.extend(functor, context);

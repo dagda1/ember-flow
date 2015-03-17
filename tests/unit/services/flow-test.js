@@ -8,27 +8,46 @@ import QUnit from 'qunit';
 moduleFor('service:flow', {
 });
 
-test('an action should be callable', function(assert) {
+test('an action can be called synchronously', function(assert) {
   let service = this.subject(),
-      fooCalled = false,
-      fooAction = service.createAction('foo'),
+      syncCalled = false,
+      syncAction = service.createAction({sync: true}),
       store = service.createStore({
-        foo: function() {
-          fooCalled = true;
+        sync: function() {
+          syncCalled = true;
         }
       });
 
-  store.listenTo(fooAction, "foo");
+  store.listenTo(syncAction, "sync");
+
+  syncAction();
+
+  assert.ok(syncAction._isAction, "is an action");
+  assert.ok($.isFunction(syncAction, "action is a function"));
+  assert.ok(syncCalled, "The action was called");
+});
+
+test('an action can be called asynchronously', function(assert) {
+  let service = this.subject(),
+      asyncCalled = false,
+      asyncAction = service.createAction(),
+      store = service.createStore({
+        async: function() {
+          asyncCalled = true;
+        }
+      });
+
+  store.listenTo(asyncAction, "async");
 
   QUnit.stop();
 
-  fooAction();
+  asyncAction();
 
   Ember.run.next(() => {
     QUnit.start();
-    assert.ok(fooAction._isAction, "is an action");
-    assert.ok($.isFunction(fooAction, "action is a function"));
-    assert.ok(fooCalled, "The action was called");
+    assert.ok(asyncAction._isAction, "is an action");
+    assert.ok($.isFunction(asyncAction, "action is a function"));
+    assert.ok(asyncCalled, "The action was called");
   });
 });
 
