@@ -2,6 +2,7 @@ import Ember from 'ember';
 import _ from "../utils/utils";
 
 export default Ember.Mixin.create({
+  
   /**
    * Sets up a subscription to the given listenable for the context object
    *
@@ -15,6 +16,8 @@ export default Ember.Mixin.create({
         subscriptions = this.subscriptions || [],
         unsubscriber,
         subscriptionObject;
+
+    this.validateListening(listenable);
 
     unsubscribe = listenable.listen(this[callback] || callback, this);
 
@@ -61,5 +64,17 @@ export default Ember.Mixin.create({
         this.listenTo(action, localName);
       }
     }
+  },
+  /**
+   * Checks if the current context can listen to the supplied listenable
+   *
+   * @param {Action|Store} listenable An Action or Store that should be
+   *  listened to.
+   * @returns {String|Undefined} An error message, or undefined if there was no problem.
+  */
+  validateListening: function(listenable) {
+    Ember.assert("Listener is not able to listen to itself.", listenable !== this);
+
+    Ember.assert(`${listenable} is missing a listen method.`, $.isFunction(listenable.listen));
   }
 });
