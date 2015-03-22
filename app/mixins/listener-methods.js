@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import _ from "../utils/utils";
 
 export default Ember.Mixin.create({
   /**
@@ -34,5 +35,31 @@ export default Ember.Mixin.create({
     subscriptions.push(subscriptionObject);
 
     return subscriptionObject;
+  },
+
+  /**
+   * A convenience method that listens to all listenables in the given object.
+   *
+   * @param {Object} listenables An object of listenables. Keys will be used as callback method names.
+   */
+  listenToMany: function(listenables) {
+    for(let action of listenables) {
+      let key, callBackName, localName;
+
+      if(_.isObject(action)) {
+        key = _.leadingProperty(action);
+      }
+      else {
+        key = action;
+      }
+
+      callBackName = _.callBackName(key);
+
+      localName = this[callBackName] ? callBackName : this[key] ? key : undefined;
+
+      if(localName) {
+        this.listenTo(action, localName);
+      }
+    }
   }
 });

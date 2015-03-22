@@ -113,7 +113,6 @@ test('multiple synchrnous actions can be called', function(assert) {
         }
       });
 
-
   store.listenTo(actions.foo, "foo");
   store.listenTo(actions.bar, "bar");
 

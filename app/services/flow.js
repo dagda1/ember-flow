@@ -12,7 +12,7 @@ export default Ember.Object.extend({
 
     for(let k of definitions) {
       if(_.isObject(k)) {
-        let key = Object.keys(k)[0],
+        let key = _.leadingProperty(k),
             val = k[key];
 
         actions[key] = createAction(val);
