@@ -46,31 +46,16 @@ export default Ember.Mixin.create({
    * @param {Object} listenables An object of listenables. Keys will be used as callback method names.
    */
   listenToMany: function(listenables) {
-    let i = 0,
-        l = listenables.length,
-        action;
-
-    for(; i < l; i++) {
-      let key, callBackName, localName;
-
-      action = listenables[i];
-
-      if(_.isObject(action)) {
-        key = _.leadingProperty(action);
-      }
-      else {
-        key = action;
-      }
-
-      callBackName = _.callBackName(key);
-
-      localName = this[callBackName] ? callBackName : this[key] ? key : undefined;
+    for(let key in listenables) {
+      let callBackName = _.callBackName(key),
+          localName = this[callBackName] ? callBackName : this[key] ? key : undefined;
 
       if(localName) {
-        this.listenTo(action, localName);
+        this.listenTo(listenables[key], localName);
       }
     }
   },
+
   /**
    * Checks if the current context can listen to the supplied listenable
    *

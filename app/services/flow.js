@@ -8,20 +8,14 @@ export default Ember.Object.extend({
   createStore: createStore,
 
   createActions: function(definitions) {
-    let actions = {},
-        i = 0, l = definitions.length, k;
+    let actions = {};
 
-    for(; i < l; i++) {
-      k = definitions[i];
+    for (let k in definitions){
+      if (definitions.hasOwnProperty(k)) {
+        let val = definitions[k],
+            actionName = _.isObject(val) ? k : val;
 
-      if(_.isObject(k)) {
-        let key = _.leadingProperty(k),
-            val = k[key];
-
-        actions[key] = createAction(val);
-      }
-      else {
-        actions[k] = createAction();
+        actions[actionName] = createAction(val);
       }
     }
 

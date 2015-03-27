@@ -8,6 +8,34 @@ import QUnit from 'qunit';
 moduleFor('service:flow', {
 });
 
+test('multiple actions can be created from an array of strings.', function (assert) {
+  let service = this.subject(),
+      actionNames = ["foo", "bar"],
+      actions;
+
+  actions = service.createActions(actionNames);
+
+  assert.ok(actions.hasOwnProperty('foo'), "action foo was created from an array of strings");
+  assert.ok(actions.hasOwnProperty('bar'), "action bar was created from an array of strings");
+
+  assert.ok($.isFunction(actions.foo), "a foo method was created from an array of strings");
+  assert.ok($.isFunction(actions.bar), "a bar method was created from an array of strings");
+});
+
+test('multiple actions can be created from a hash', function(assert) {
+  let service = this.subject(),
+      actionDefs = {foo: {sync: true}, bar: {sync: true}},
+      actions;
+
+  actions = service.createActions(actionDefs);
+
+  assert.ok(actions.hasOwnProperty('foo'), "a foo property was created from a hash.");
+  assert.ok(actions.hasOwnProperty('bar'), "a bar property was created from a hash.");
+
+  assert.ok($.isFunction(actions.foo), "a foo method was created from a hash");
+  assert.ok($.isFunction(actions.bar), "a bar method was created from a hash");
+});
+
 test('an action can be called synchronously', function(assert) {
   let service = this.subject(),
       syncCalled = false,
@@ -98,10 +126,8 @@ test('multiple actions can be called', function(assert) {
 
 test('multiple synchrnous actions can be called', function(assert) {
   let service = this.subject(),
-      actions = service.createActions([
-        {foo: {sync: true}},
-        {bar: {sync: true}}
-      ]),
+      actionDefs = {foo: {sync: true}, bar: {sync: true}},
+      actions = service.createActions(actionDefs),
       fooCalled = false,
       barCalled = false,
       store = service.createStore({
