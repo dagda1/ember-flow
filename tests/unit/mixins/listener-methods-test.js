@@ -31,22 +31,38 @@ var store,
     action3,
     fn = function(){};
 
-module('ListenerMethodsMixin - Stop Listening', {
-  setup: function() {
-    store = createStore();
+module('ListenerMethodsMixin - Stop Listening');
 
-    action1 = createAction({sync: true});
-    action2 = createAction({sync: true});
-    action3 = createAction({sync: true});
-  }
-});
+test('calling stop on the listener should remove the listener from the list but keep the others.', function(assert) {
+  store = createStore();
 
-test('should remove listener from the list but keep the others.', function(assert) {
+  action1 = createAction({sync: true});
+  action3 = createAction({sync: true});
+
   store.listenTo(action1, fn);
   store.listenTo(createAction(), fn);
   store.listenTo(action3, fn);
 
   store.subscriptions[1].stop();
+
+  assert.equal(2, store.subscriptions.length);
+
+  assert.equal(action1, store.subscriptions[0].listenable);
+  assert.equal(action3, store.subscriptions[1].listenable);
+});
+
+test('callint stopListeningTo on the store should remove the listener from the store but keep the others.', function(assert) {
+  store = createStore();
+
+  action1 = createAction({sync: true});
+  action2 = createAction({sync: true});
+  action3 = createAction({sync: true});
+
+  store.listenTo(action1, fn);
+  store.listenTo(action2, fn);
+  store.listenTo(action3, fn);
+
+  store.stopListeningTo(action2);
 
   assert.equal(2, store.subscriptions.length);
 

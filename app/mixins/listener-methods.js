@@ -66,5 +66,22 @@ export default Ember.Mixin.create({
     Ember.assert("Listener is not able to listen to itself.", listenable !== this);
 
     Ember.assert(`${listenable} is missing a listen method.`, $.isFunction(listenable.listen));
+  },
+  /**
+   * Stops listening to a single listenable
+   *
+   * (@param {Action|Store} listenable The action or store we no longer want to listen to
+   * @returns {Boolean} True if a subscription was found and removed, otherwise false.
+   */
+  stopListeningTo: function(listenable) {
+    let subscription, subscriptions = this.subscriptions || [];
+
+    subscription = subscriptions.find(function(sub) {
+      return sub.listenable === listenable;
+    });
+
+    Ember.assert('Failed to find listenable to stopListeningTo', !!subscription);
+
+    subscription.stop();
   }
 });
