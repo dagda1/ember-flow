@@ -83,5 +83,19 @@ export default Ember.Mixin.create({
     Ember.assert('Failed to find listenable to stopListeningTo', !!subscription);
 
     subscription.stop();
+  },
+  /**
+   * Stops all subscriptions and empties subscriptions array
+   */
+  stopListeningToAll: function() {
+    let subscription,
+        subscriptions = this.subscriptions || [],
+        l = subscriptions.length - 1;
+
+    for(let i = l; i >=0; i--) {
+      subscription = subscriptions[i];
+
+      subscription.stop();
+    }
   }
 });

@@ -7,6 +7,8 @@ export default function createStore(definition) {
 
   let store = Ember.Object.createWithMixins(PublisherMethodsMixin, ListenerMethodsMixin, definition, {
     setup: Ember.on('init', function(){
+      this._super.apply(this, arguments);
+
       this.subscriptions = [];
 
       if(this.listenables) {

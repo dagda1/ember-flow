@@ -51,7 +51,7 @@ test('calling stop on the listener should remove the listener from the list but 
   assert.equal(action3, store.subscriptions[1].listenable);
 });
 
-test('callint stopListeningTo on the store should remove the listener from the store but keep the others.', function(assert) {
+test('calling stopListeningTo on the store should remove the listener from the store but keep the others.', function(assert) {
   store = createStore();
 
   action1 = createAction({sync: true});
@@ -68,4 +68,20 @@ test('callint stopListeningTo on the store should remove the listener from the s
 
   assert.equal(action1, store.subscriptions[0].listenable);
   assert.equal(action3, store.subscriptions[1].listenable);
+});
+
+test('stopListeningToAll removes all subscriptions.', function(assert) {
+  store = createStore();
+
+  action1 = createAction({sync: true});
+  action2 = createAction({sync: true});
+  action3 = createAction({sync: true});
+
+  store.listenTo(action1, fn);
+  store.listenTo(action2, fn);
+  store.listenTo(action3, fn);
+
+  store.stopListeningToAll();
+
+  assert.equal(0, store.subscriptions.length);
 });
