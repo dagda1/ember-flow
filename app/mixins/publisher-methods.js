@@ -23,7 +23,7 @@ export default Ember.Mixin.create(Ember.Evented, {
 
     this.on(this.eventLabel, this, eventHandler);
 
-    return function() {
+    return () => {
       aborted = true;
       this.off(this.eventLabel, this, eventHandler);
     };

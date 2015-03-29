@@ -2,7 +2,6 @@ import Ember from 'ember';
 import _ from "../utils/utils";
 
 export default Ember.Mixin.create({
-  
   /**
    * Sets up a subscription to the given listenable for the context object
    *
@@ -31,7 +30,7 @@ export default Ember.Mixin.create({
     };
 
     subscriptionObject = {
-      stop: unsubscribe,
+      stop: unsubscriber,
       listenable: listenable
     };
 
