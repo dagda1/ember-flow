@@ -1,3 +1,5 @@
+import Ember from 'ember';
+
 function isObject(obj) {
   var type = typeof obj;
 
@@ -5,7 +7,7 @@ function isObject(obj) {
 }
 
 function callBackName(string) {
-  return `on${string.capitalize()}`;
+  return `on${Ember.String.capitalize(string)}`;
 }
 
 export default {

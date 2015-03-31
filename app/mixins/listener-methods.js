@@ -76,7 +76,7 @@ export default Ember.Mixin.create({
   stopListeningTo: function(listenable) {
     let subscription, subscriptions = this.subscriptions || [];
 
-    subscription = subscriptions.find(function(sub) {
+    subscription = Ember.A(subscriptions).find(function(sub) {
       return sub.listenable === listenable;
     });
 
